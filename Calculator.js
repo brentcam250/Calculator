@@ -47,4 +47,14 @@ let zero = document.getElementById('zero').addEventListener('click', () => Butto
 
 //operators in order they appear on the screen.
 
-// let divide = document.getElementById
+let divide = document.getElementById('divide').addEventListener('click', () => ButtonPress('/'));
+let multiply = document.getElementById('multiply').addEventListener('click', () => ButtonPress('*'));
+let subtract = document.getElementById('subtract').addEventListener('click', () => ButtonPress('-'));
+let add = document.getElementById('add').addEventListener('click', () => ButtonPress('+'));
+
+//all other buttons below:
+
+let decimal  = document.getElementById('decimal').addEventListener('click', () => ButtonPress('.'));
+let backSpace  = document.getElementById('backspace').addEventListener('click', () => ButtonPress('backspace'));
+let clear  = document.getElementById('clear').addEventListener('click', () => ButtonPress('clear'));
+let equals  = document.getElementById('equals').addEventListener('click', () => ButtonPress('='));
