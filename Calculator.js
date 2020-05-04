@@ -34,6 +34,17 @@ class Stack {
             top --;
         }
     }
+    clear() {
+        while(this.isEmpty() === false){
+            this.pop();
+        }
+        this.push('');
+    }
+}
+
+// this takes in the current stack, and will evaluate 
+function Evaluate(buttonStack){
+
 }
 
 
@@ -54,8 +65,7 @@ function ButtonPress (whichButton, buttonStack){
                 break;
 
             case 'clear':
-                let cleanButtonStack = Clear();
-                Display(cleanButtonStack);
+                buttonStack.clear();
                 break;
             case 'backspace': 
                 //this deletes the last single character input
@@ -115,10 +125,9 @@ function Clear () {
     console.log(buttonStack.peek());
     return(buttonStack);
 }
-
-
-//create new stack
-let buttonStack = Clear();
+//create a new stack, and setup the calculator for input
+let buttonStack = new Stack ();
+buttonStack.push('');
 //run the display.
 Display(buttonStack);
 
