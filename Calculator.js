@@ -13,7 +13,9 @@ class Stack {
         return this.top;
     }
     peek() {
-        return this.data[this.top -1];
+        if(this.isEmpty() === false){
+            return this.data[this.top -1];
+        }
     }
     isEmpty() {
         return this.top === 0;
@@ -43,16 +45,12 @@ function Display(buttonStack) {
 }
 
 function ButtonPress (whichButton, buttonStack){
-    console.log('printing stack ' + buttonStack.print());
     console.log('stack length is '  + buttonStack.length());
     if(isNaN(whichButton)){
-        //then its not a number...
-        // if(whichButton === '='){
-        //     //then we have to evaluate all the stack.
-        // }
         switch(whichButton){
             case '=':
-
+                //just print out everything in the stack so far.
+                buttonStack.print();
                 break;
 
             case 'clear':
@@ -60,25 +58,15 @@ function ButtonPress (whichButton, buttonStack){
                 Display(cleanButtonStack);
                 break;
             case 'backspace': 
+                //this deletes the last single character input
+                //for example it would delete a + or a *, but if it were a number input such as 623,
+                //backspace would only delete the last character leaving us 62
                 break;
             case '.':
                 alert('i dont do decimals yet...');
                 break;
-
-            case '+':
-
-                break;
-
-            case '-':
-                
-                break;
-
-            case '/':
-
-                break;
-
-            case '*':
-
+            default:
+                buttonStack.push(whichButton);
                 break;
 
 
@@ -90,11 +78,12 @@ function ButtonPress (whichButton, buttonStack){
         if(isNaN(buttonStack.peek())){
             //then the previously pressed button was not a number.
             // and should not do the concatenation.
+            buttonStack.push(whichButton);
         }else{
             //have to do this conversion between int/string/int so that it concatenates rather than adding together.
             let concatenatedNum = "" + buttonStack.pop() + whichButton;
             buttonStack.push(parseInt(concatenatedNum));
-            console.log(`pushing ${concatenatedNum} into the stack`);        
+            //console.log(`pushing ${concatenatedNum} into the stack`);        
         }
 
     }
