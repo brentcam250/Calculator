@@ -35,6 +35,7 @@ class Stack {
         }
     }
     clear() {
+        //destroys everything in the stack... be careful.
         while(this.isEmpty() === false){
             this.pop();
         }
@@ -44,7 +45,44 @@ class Stack {
 
 // this takes in the current stack, and will evaluate 
 function Evaluate(buttonStack){
+    //lets see what we're working with.
+    buttonStack.print();
+    let result;
+    let lastIn;
+    let operator;
+    let firstIn;
+    if(buttonStack.length() >= 3){
+        lastIn = buttonStack.pop();
+        operator = buttonStack.pop();
+        firstIn = buttonStack.pop();
+    }
+    // if(operator === '+'){
+    //     result = Addition(lastIn, firstIn);
+    //     console.log(`result of addition = ${result}`);
+    //     buttonStack.push(result);
+    // }else if (operator === '-'){
+    
+    switch(operator){
+        case '+':
+            result = Addition(firstIn, lastIn);
+            break;
 
+        case '-':
+            result = Subtraction(firstIn, lastIn)
+            break;
+        
+        case '*':
+            result = Multiplication(firstIn, lastIn);
+            break;
+
+        case '/':
+            result = Division(firstIn, lastIn);
+            break;
+    }
+    buttonStack.push(result);
+
+
+    return null;
 }
 
 
@@ -61,7 +99,7 @@ function ButtonPress (whichButton, buttonStack){
         switch(whichButton){
             case '=':
                 //just print out everything in the stack so far.
-                buttonStack.print();
+                Evaluate(buttonStack);
                 break;
 
             case 'clear':
@@ -111,7 +149,12 @@ function Subtraction (a, b) {
 }
 
 function Division (a, b) {
-    return (parseInt(a) / parseInt(b));
+    if(b === 0){
+        return 'You suck';
+    }
+    let twoDecimals = (parseInt(a) /parseInt(b));
+    twoDecimals.toFixed(2);
+    return (twoDecimals);
 }
 
 function Multiplication (a, b){
