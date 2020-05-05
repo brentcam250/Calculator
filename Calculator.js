@@ -55,6 +55,12 @@ function Evaluate(buttonStack){
         lastIn = buttonStack.pop();
         operator = buttonStack.pop();
         firstIn = buttonStack.pop();
+        if(isNaN(lastIn) || isNaN(firstIn)){
+            console.log('something is wrong... i think that two operators may have been pushed back to back');
+        }
+    }
+    else{
+        return null;
     }
     // if(operator === '+'){
     //     result = Addition(lastIn, firstIn);
@@ -93,12 +99,15 @@ function Display(buttonStack) {
     //console.log(display);
 }
 
+
 function ButtonPress (whichButton, buttonStack){
-    console.log('stack length is '  + buttonStack.length());
     if(isNaN(whichButton)){
+        if(isNaN(buttonStack.peek())){
+            //don't want two operators in a row...
+            return null;
+        }
         switch(whichButton){
             case '=':
-                //just print out everything in the stack so far.
                 Evaluate(buttonStack);
                 break;
 
@@ -106,6 +115,7 @@ function ButtonPress (whichButton, buttonStack){
                 buttonStack.clear();
                 break;
             case 'backspace': 
+                doBackSpace(buttonStack);
                 //this deletes the last single character input
                 //for example it would delete a + or a *, but if it were a number input such as 623,
                 //backspace would only delete the last character leaving us 62
@@ -150,6 +160,7 @@ function Subtraction (a, b) {
 
 function Division (a, b) {
     if(b === 0){
+        //dont divide by zero plz
         return 'You suck';
     }
     let twoDecimals = (parseInt(a) /parseInt(b));
@@ -159,6 +170,25 @@ function Division (a, b) {
 
 function Multiplication (a, b){
     return (parseInt(a) * parseInt(b));
+}
+
+//returnss 0 if it took off an operator
+//returns 1 if it shortened a number
+function doBackSpace(buttonStack){
+    let prev = buttonStack.peek();
+    if(isNaN(prev)){
+        //last thing is not a number so just pop it off and forget about it.
+        buttonStack.pop();
+        return 0;
+    }else{
+        console.log(prev);
+        //it is a number... want to just take off the last digit.
+        prev = prev.toString();
+        prev = prev.substring(0, prev.length -1);
+        console.log(`chopped prev: ${prev}`);
+        buttonStack.push(prev);
+        return 1;
+    }
 }
 
 //this should give us a fresh stack to start pushing things into.
