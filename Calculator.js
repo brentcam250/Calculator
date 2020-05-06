@@ -96,7 +96,7 @@ function Evaluate(buttonStack){
     //     return null;
     // }
 
-    // SOME CHANGE
+    // THOMAS!!
     
     // switch(operator){
     //     case '+':
