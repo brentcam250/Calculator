@@ -17,6 +17,11 @@ class Stack {
             return this.data[this.top -1];
         }
     }
+    peekTwo() {
+        if(this.length() >= 2){
+            return this.data[this.top-2];
+        }
+    }
     isEmpty() {
         return this.top === 0;
     }
@@ -56,18 +61,13 @@ function Evaluate(buttonStack){
         operator = buttonStack.pop();
         firstIn = buttonStack.pop();
         if(isNaN(lastIn) || isNaN(firstIn)){
-            console.log('something is wrong... i think that two operators may have been pushed back to back');
+            console.log('something is wrong... i think that two operators may have been pushed back to back, may also get this message if operator then backspace pressed');
         }
     }
     else{
-        return null;
+        return 0;
     }
-    // if(operator === '+'){
-    //     result = Addition(lastIn, firstIn);
-    //     console.log(`result of addition = ${result}`);
-    //     buttonStack.push(result);
-    // }else if (operator === '-'){
-    
+
     switch(operator){
         case '+':
             result = Addition(firstIn, lastIn);
@@ -82,25 +82,54 @@ function Evaluate(buttonStack){
             break;
 
         case '/':
+            console.log("im about to call the divison method");
             result = Division(firstIn, lastIn);
+            console.log(`result of division is ${result}`);
+            buttonStack.print();
+            console.log('length of stack is ' +  buttonStack.length())
             break;
     }
     buttonStack.push(result);
 
 
-    return null;
+    return 1;
 }
 
 
 //this should handle everything that comes up on the display.
 function Display(buttonStack) {
     let display = document.querySelector('.calculator-display');
-    display.innerText = buttonStack.peek();
-    //console.log(display);
+    if(buttonStack.peek() === '' ){
+        // this placeholder keeps the display the same size.
+        display.innerText = '|';
+        display.style.color = '#AAAAAE';
+    }else{
+        display.style.color = 'white';
+        if(isNaN(buttonStack.peek())){
+            //want to ignore displaying operators on the screen. peek 2 deep to get the last number.
+            display.innerText = buttonStack.peekTwo();
+        }else{
+            display.innerText = buttonStack.peek();
+        }
+        
+    }
+
 }
 
 
 function ButtonPress (whichButton, buttonStack){
+    //if we have a full expression and another operator is pressed, we want to evaluate the first part before moving on.
+    if(buttonStack.length()>3){
+        console.log('im doing the multiple operator eval method');
+        //buttonStack.print();
+        let savedOperator = buttonStack.pop();
+        let didEval = Evaluate(buttonStack);
+        if(!didEval){
+            console.log('received error from evaluate');
+        }
+        //Display(buttonStack);
+        buttonStack.push(savedOperator);
+    }
     if(isNaN(whichButton)){
         if(isNaN(buttonStack.peek())){
             //don't want two operators in a row...
@@ -149,27 +178,48 @@ function ButtonPress (whichButton, buttonStack){
 }
 
 
-
+//rounds numbers to 2 decimal points
 function Addition (a, b) {
-    return (parseInt(a) + parseInt(b));
+    // return (parseInt(a) + parseInt(b));
+    a = parseFloat(a);
+    b = parseFloat(b);
+
+    let result = a + b;
+    result = Math.round((result * 100 )/100);
+    return result;
+
 }
 
 function Subtraction (a, b) {
-    return (parseInt(a) - parseInt(b));
+    a = parseFloat(a);
+    b = parseFloat(b);
+
+    let result = a - b;
+    result = Math.round((result * 100 )/100);
+    return (result);
 }
 
 function Division (a, b) {
+    a = parseFloat(a);
+    b = parseFloat(b);
+    console.log(`im about to attempt dividing  ${a} / ${b}`);
     if(b === 0){
+        console.log('b is zero');
         //dont divide by zero plz
         return 'You suck';
     }
-    let twoDecimals = (parseInt(a) /parseInt(b));
-    twoDecimals.toFixed(2);
-    return (twoDecimals);
+    let result = a / b;
+    //result = Math.round((result * 100 )/100);
+    return (result);
 }
 
 function Multiplication (a, b){
-    return (parseInt(a) * parseInt(b));
+    a = parseFloat(a);
+    b = parseFloat(b);
+
+    let result = a * b;
+    result = Math.round((result * 100 )/100);
+    return (result);
 }
 
 //returnss 0 if it took off an operator
@@ -185,7 +235,6 @@ function doBackSpace(buttonStack){
         //it is a number... want to just take off the last digit.
         prev = prev.toString();
         prev = prev.substring(0, prev.length -1);
-        console.log(`chopped prev: ${prev}`);
         buttonStack.push(prev);
         return 1;
     }
