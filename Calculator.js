@@ -43,31 +43,11 @@ class Stack {
     }
 }
 
-// this takes in the current stack, and will evaluate 
-function Evaluate(buttonStack){
-    //lets see what we're working with.
-    buttonStack.print();
+function Operate(lastIn, operator, firstIn) {
     let result;
-    let lastIn;
-    let operator;
-    let firstIn;
-    if(buttonStack.length() >= 3){
-        lastIn = buttonStack.pop();
-        operator = buttonStack.pop();
-        firstIn = buttonStack.pop();
-        if(isNaN(lastIn) || isNaN(firstIn)){
-            console.log('something is wrong... i think that two operators may have been pushed back to back');
-        }
+    if(isNaN(lastIn) || isNaN(firstIn) || !isNaN(operator)){
+        console.log('something is wrong... i think that two operators may have been pushed back to back');
     }
-    else{
-        return null;
-    }
-    // if(operator === '+'){
-    //     result = Addition(lastIn, firstIn);
-    //     console.log(`result of addition = ${result}`);
-    //     buttonStack.push(result);
-    // }else if (operator === '-'){
-    
     switch(operator){
         case '+':
             result = Addition(firstIn, lastIn);
@@ -85,7 +65,58 @@ function Evaluate(buttonStack){
             result = Division(firstIn, lastIn);
             break;
     }
-    buttonStack.push(result);
+    return result;
+}
+
+// this takes in the current stack, and will evaluate 
+function Evaluate(buttonStack){
+    //lets see what we're working with.
+    buttonStack.print();
+    // let result;
+
+
+    while(buttonStack.length() >= 3){
+        let lastIn = buttonStack.pop();
+        let operator = buttonStack.pop();
+        let firstIn = buttonStack.pop();
+        let result = Operate(lastIn, operator, firstIn);
+        buttonStack.push(result);
+    }
+    console.log('after eval loop ')
+    buttonStack.print();
+    // if(buttonStack.length() >= 3){
+    //     lastIn = buttonStack.pop();
+    //     operator = buttonStack.pop();
+    //     firstIn = buttonStack.pop();
+    //     if(isNaN(lastIn) || isNaN(firstIn)){
+    //         console.log('something is wrong... i think that two operators may have been pushed back to back');
+    //     }
+    // }
+    // else{
+    //     return null;
+    // }
+
+    // SOME CHANGE
+    
+    // switch(operator){
+    //     case '+':
+    //         result = Addition(firstIn, lastIn);
+    //         break;
+
+    //     case '-':
+    //         result = Subtraction(firstIn, lastIn)
+    //         break;
+        
+    //     case '*':
+    //         result = Multiplication(firstIn, lastIn);
+    //         break;
+
+    //     case '/':
+    //         result = Division(firstIn, lastIn);
+    //         break;
+    // }
+    
+    // buttonStack.push(result);
 
 
     return null;
