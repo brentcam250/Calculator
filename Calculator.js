@@ -126,7 +126,14 @@ function Display(){
 function ButtonPress (whichButton){
 
     //if we have a full expression and another operator is pressed, we want to evaluate the first part before moving on.
-    if(buttonStack.length() >= 3 && isNaN(whichButton)){
+    let operators = ['+', '-', '*', '/'];
+    let isOperator = operators.indexOf(whichButton);
+    if(buttonStack.length() >= 3 && isOperator >= 0){
+
+        // if(let isOperator = operators.indexOf(whichButton)){
+        //     console.log(whichButton);
+        // }
+    //if(buttonStack.length() >= 3 && operators.indexOf(whichButton)){
         let didEval = Evaluate(buttonStack);
         if(!didEval){
             console.log('received error from evaluate');
@@ -137,7 +144,7 @@ function ButtonPress (whichButton){
 
     }
     if(isNaN(whichButton)){
-        if(isNaN(buttonStack.peek())){
+        if(isNaN(buttonStack.peek()) && isOperator >= 0){
             //don't want two operators in a row...
             //this gets weird when we want to clear or backspace
             return null;
