@@ -53,8 +53,6 @@ class Stack {
 // function Evaluate(buttonStack){
 function Evaluate(){
 
-    //lets see what we're working with.
-    buttonStack.print();
     let result;
     let lastIn;
     let operator;
@@ -69,6 +67,11 @@ function Evaluate(){
         }
     }
     else{
+        if(buttonStack.length() < 3){
+            //not enough things to evaluate so just ignore the call to evaluate
+            //this will happen if the user does something like 1 + = 
+            return;
+        }
         //dont have enough things to evaluate.
         console.log("not exactly 3 things in my stack so ill print to show you ");
         buttonStack.print();
@@ -101,7 +104,6 @@ function Evaluate(){
 
 
 //this should handle everything that comes up on the display.
-//function Display(buttonStack) {
 function Display(){
     let display = document.querySelector('.calculator-display');
     if(buttonStack.peek() === undefined){
@@ -165,7 +167,6 @@ function ButtonPress (whichButton){
                 //this deletes the last single character input
                 //for example it would delete a + or a *, but if it were a number input such as 623,
                 //backspace would only delete the last character leaving us 62
-                console.log(backspaceResult);
                 break;
             case '.':
                 alert('i dont do decimals yet...');
@@ -239,7 +240,6 @@ function Multiplication (a, b){
 
 //returnss 0 if it took off an operator
 //returns 1 if it shortened a number
-// function doBackSpace(buttonStack){
 function doBackSpace(){
 
     let prev = buttonStack.peek();
@@ -257,12 +257,13 @@ function doBackSpace(){
     }
 }
 
-//this should give us a fresh stack to start pushing things into.
-function Clear () {
-    let buttonStack = new Stack ();
-    console.log(buttonStack.peek());
-    return(buttonStack);
-}
+// //this should give us a fresh stack to start pushing things into.
+// function Clear () {
+//     let buttonStack = new Stack ();
+//     console.log(buttonStack.peek());
+//     return(buttonStack);
+// }
+
 //create a new stack, and setup the calculator for input
 let buttonStack = new Stack ();
 
